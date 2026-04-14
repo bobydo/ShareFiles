@@ -106,3 +106,10 @@ JobFit can fetch and analyze job postings from:
 ---
 
 *Built for job seekers who want signal, not noise.*
+
+
+## Demo Image
+![1776181252374](image/README/1776181252374.png)
+![1776181300040](image/README/1776181300040.png)
+![1776181324884](image/README/1776181324884.png)
+![1776181443611](image/README/1776181443611.png)
