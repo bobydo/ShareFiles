@@ -4,7 +4,7 @@
 
 Cloudflare Email Routing setup for bobydo.pro.
 
-![DNS Configuration](./image/dns-config.png)
+![DNS Configuration](./image/bobydoConfig.png)
 
 ### Records
 
