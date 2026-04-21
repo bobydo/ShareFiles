@@ -1,0 +1,21 @@
+; BIND zone file for bobydo.pro
+; Import via: Cloudflare DNS → Import and Export → Import DNS Records
+$ORIGIN bobydo.pro.
+$TTL 3600
+
+; ── Nameservers ──────────────────────────────────────────────
+@ IN NS alberto.ns.cloudflare.com.
+@ IN NS frida.ns.cloudflare.com.
+
+; ── Cloudflare Email Routing (for contact@bobydo.pro) ────────
+@ IN MX 14 route1.mx.cloudflare.net.
+@ IN MX 28 route2.mx.cloudflare.net.
+@ IN MX 42 route3.mx.cloudflare.net.
+
+; ── SPF — authorise Cloudflare to send on your behalf ────────
+@ IN TXT "v=spf1 include:_spf.mx.cloudflare.net ~all"
+
+; ── Cloudflare Pages (uncomment after deploying Pages) ───────
+; Replace bobydo-site.pages.dev with your actual Pages URL
+; @ IN CNAME bobydo-site.pages.dev.
+; www IN CNAME bobydo-site.pages.dev.

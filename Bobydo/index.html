@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bobydo Inc. — Enterprise Software Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0f172a;
+      --navy2:  #1e3a5f;
+      --teal:   #0ea5e9;
+      --orange: #f97316;
+      --purple: #8b5cf6;
+      --green:  #22c55e;
+      --pink:   #ec4899;
+      --text:   #1e293b;
+      --muted:  #64748b;
+      --bg:     #ffffff;
+      --card:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+    }
+    .nav-brand {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: .02em;
+    }
+    .nav-brand span { color: var(--teal); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f5f3ff 100%);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,.08) 0%, transparent 70%);
+      top: -150px; left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .company-badge {
+      display: inline-block;
+      background: rgba(14,165,233,.1);
+      border: 1px solid rgba(14,165,233,.3);
+      color: #0284c7;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .3rem .9rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: .5rem;
+    }
+    .hero-tagline {
+      font-size: clamp(.95rem, 2.5vw, 1.2rem);
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+    }
+    .pillars-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin-bottom: 2rem;
+    }
+    .pillar-chip {
+      padding: .45rem 1rem;
+      border-radius: 999px;
+      font-size: .82rem;
+      font-weight: 600;
+      border: 1px solid;
+    }
+    .pillar-chip.teal   { background: rgba(14,165,233,.12);  border-color: rgba(14,165,233,.4);  color: #7dd3fc; }
+    .pillar-chip.orange { background: rgba(249,115,22,.12);  border-color: rgba(249,115,22,.4);  color: #fdba74; }
+    .pillar-chip.purple { background: rgba(139,92,246,.12);  border-color: rgba(139,92,246,.4);  color: #c4b5fd; }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .contact-links a {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .88rem;
+      transition: color .2s;
+    }
+    .contact-links a:hover { color: var(--teal); }
+    .icon { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── SECTIONS ── */
+    section { padding: 4rem 2rem; }
+    .container { max-width: 960px; margin: 0 auto; }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), transparent);
+      border-radius: 2px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg); }
+    .about-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      border: 1px solid #e2e8f0;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--purple), var(--orange));
+    }
+    .about-card p { color: #475569; margin-bottom: 1rem; }
+    .about-card p:last-child { margin-bottom: 0; }
+
+    /* ── EXPERTISE PILLARS ── */
+    #expertise { background: #f8fafc; }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .pillar-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.8rem;
+      border: 1px solid #e2e8f0;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .pillar-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+    .pillar-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .pillar-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .5rem; }
+    .pillar-card p  { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag {
+      font-size: .72rem;
+      font-weight: 600;
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+    .tag.teal   { background: rgba(14,165,233,.1);  border-color: rgba(14,165,233,.3);  color: #0284c7; }
+    .tag.orange { background: rgba(249,115,22,.1);  border-color: rgba(249,115,22,.3);  color: #ea580c; }
+    .tag.purple { background: rgba(139,92,246,.1);  border-color: rgba(139,92,246,.3);  color: #7c3aed; }
+    .tag.green  { background: rgba(34,197,94,.1);   border-color: rgba(34,197,94,.3);   color: #16a34a; }
+    .tag.pink   { background: rgba(236,72,153,.1);  border-color: rgba(236,72,153,.3);  color: #db2777; }
+    .tag.navy   { background: rgba(30,58,95,.1);    border-color: rgba(30,58,95,.3);    color: #1e3a5f; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg); }
+    .skills-groups { display: flex; flex-direction: column; gap: 1.4rem; }
+    .skill-group { }
+    .skill-group-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .skill-group-label.teal   { color: var(--teal); }
+    .skill-group-label.orange { color: var(--orange); }
+    .skill-group-label.purple { color: var(--purple); }
+    .skill-group-label.green  { color: var(--green); }
+    .skill-group-label.pink   { color: var(--pink); }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: #f1f5f9; }
+    .timeline { display: flex; flex-direction: column; gap: 1.5rem; }
+    .exp-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.6rem 1.8rem;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid;
+      transition: box-shadow .2s;
+    }
+    .exp-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.07); }
+    .exp-card.teal   { border-left-color: var(--teal); }
+    .exp-card.orange { border-left-color: var(--orange); }
+    .exp-card.purple { border-left-color: var(--purple); }
+    .exp-card.green  { border-left-color: var(--green); }
+    .exp-card.pink   { border-left-color: var(--pink); }
+    .exp-card.navy   { border-left-color: #64748b; }
+    .exp-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: .4rem;
+      margin-bottom: .8rem;
+    }
+    .exp-title { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .exp-company { font-size: .92rem; font-weight: 600; }
+    .exp-company.teal   { color: var(--teal); }
+    .exp-company.orange { color: var(--orange); }
+    .exp-company.purple { color: var(--purple); }
+    .exp-company.green  { color: var(--green); }
+    .exp-company.pink   { color: var(--pink); }
+    .exp-company.navy   { color: var(--muted); }
+    .exp-meta { font-size: .8rem; color: var(--muted); text-align: right; }
+    .exp-card ul { padding-left: 1.2rem; }
+    .exp-card li { font-size: .88rem; color: #475569; margin-bottom: .5rem; }
+    .exp-card li:last-child { margin-bottom: 0; }
+    .project-highlight {
+      margin-top: 1rem;
+      background: linear-gradient(135deg, rgba(139,92,246,.06), rgba(14,165,233,.06));
+      border: 1px solid rgba(139,92,246,.2);
+      border-radius: 10px;
+      padding: .8rem 1rem;
+    }
+    .project-highlight .proj-title {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: .3rem;
+    }
+    .project-highlight p { font-size: .82rem; color: #475569; }
+    .project-highlight a { color: var(--teal); }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--bg); }
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.2rem;
+    }
+    .edu-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 1.4rem;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+    .edu-icon { font-size: 1.6rem; }
+    .edu-degree { font-size: .92rem; font-weight: 700; }
+    .edu-school { font-size: .82rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      color: var(--muted);
+      text-align: center;
+      padding: 2rem;
+      font-size: .82rem;
+    }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      section { padding: 3rem 1.2rem; }
+      .about-card { padding: 1.4rem 1.2rem; }
+      .exp-meta { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Bobydo<span>.</span>inc</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#expertise">Services</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="company-badge">Canada-Based Software Consulting</div>
+  <h1>Bobydo Inc.</h1>
+  <p class="hero-tagline">Enterprise Application Development &nbsp;&middot;&nbsp; SCADA &amp; Industrial Cloud &nbsp;&middot;&nbsp; AI-Powered Analytics</p>
+  <div class="contact-links">
+    <a href="https://www.linkedin.com/in/shenyi-bao-3b989a5/" target="_blank" rel="noopener">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM9 17H6.5v-7H9v7zm-1.25-8.27A1.37 1.37 0 1 1 9.12 7.36 1.37 1.37 0 0 1 7.75 8.73zM18 17h-2.5v-3.5c0-.84-.66-1.5-1.5-1.5s-1.5.66-1.5 1.5V17H10v-7h2.5v1.06A3.24 3.24 0 0 1 15 9.5c1.66 0 3 1.34 3 3V17z"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/bobydo" target="_blank" rel="noopener">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85V21.5c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+      GitHub
+    </a>
+    <span style="color:#475569">
+      <svg class="icon" viewBox="0 0 24 24" style="fill:#475569"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5z"/></svg>
+      Edmonton, AB
+    </span>
+    <a href="mailto:contact@bobydo.pro" style="background:var(--teal);color:#fff;padding:.45rem 1.2rem;border-radius:999px;font-weight:600;font-size:.85rem;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 2-8 5-8-5h16zm0 12H4V9l8 5 8-5v9z"/></svg>
+      Get in Touch
+    </a>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <h2 class="section-title"><span class="dot" style="background:var(--teal)"></span>About</h2>
+    <div class="about-card">
+      <p>Bobydo Inc. is a Canada-based software consulting firm specializing in enterprise application development, pipeline SCADA systems, and AI-powered analytics. Principal consultant Shenyi Bao brings over 20 years of hands-on experience designing, developing, and supporting mission-critical systems across energy, government, and insurance sectors.</p>
+      <p>We build enterprise-grade full-stack applications using C#/.NET, Python, React, and Angular — from clean RESTful APIs and distributed services to modern cloud-native deployments on Azure. Our work spans the full spectrum: industrial SCADA systems and real-time telemetry, scalable data pipelines and Power BI analytics, and AI-powered RAG solutions that turn your operational data into actionable intelligence.</p>
+      <p>Strong background in DevOps, CI/CD automation, and testing frameworks — including regression and integration testing for enterprise SCADA deployments. Collaborative Agile team member focused on automation, operational visibility, and enterprise-grade solutions that ensure reliability, scalability, and maintainability across industrial and cloud systems.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="expertise">
+  <div class="container">
+    <h2 class="section-title"><span class="dot" style="background:var(--orange)"></span>What We Deliver</h2>
+    <div class="pillars-grid">
+
+      <div class="pillar-card">
+        <div class="pillar-icon" style="background:rgba(14,165,233,.1)">💻</div>
+        <h3>Enterprise Full-Stack Development</h3>
+        <p>We design and build scalable enterprise web applications — from robust C#/.NET backends and RESTful APIs to modern React and Angular frontends. Every engagement is grounded in clean architecture, SOLID principles, and automated CI/CD delivery so your systems stay maintainable as they grow.</p>
+        <div class="tag-list">
+          <span class="tag teal">C# / .NET</span>
+          <span class="tag teal">ASP.NET MVC</span>
+          <span class="tag teal">React</span>
+          <span class="tag teal">Angular / Vue</span>
+          <span class="tag teal">TypeScript</span>
+          <span class="tag teal">REST APIs</span>
+          <span class="tag teal">Azure DevOps</span>
+        </div>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-icon" style="background:rgba(249,115,22,.1)">⚙️</div>
+        <h3>SCADA &amp; Industrial Cloud Integration</h3>
+        <p>We deliver end-to-end SCADA solutions for industrial and pipeline operations — custom HMI displays, real-time telemetry integration, and seamless cloud connectivity via Azure — keeping your control systems reliable, observable, and analytically powerful.</p>
+        <div class="tag-list">
+          <span class="tag orange">AVEVA OASyS</span>
+          <span class="tag orange">HMI XE</span>
+          <span class="tag orange">Modbus / RabbitMQ</span>
+          <span class="tag orange">Azure Functions</span>
+          <span class="tag orange">Pub/Sub</span>
+          <span class="tag orange">SQL Server</span>
+          <span class="tag orange">Power BI</span>
+        </div>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-icon" style="background:rgba(139,92,246,.1)">🤖</div>
+        <h3>AI &amp; RAG-Powered Analytics</h3>
+        <p>We turn your operational data into intelligent, searchable knowledge. From document ingestion and vector search to LLM-powered tool-calling agents and agentic workflows, we build production-grade RAG pipelines that surface the right answer at the right time — grounded in your own data.</p>
+        <div class="tag-list">
+          <span class="tag purple">LangChain</span>
+          <span class="tag purple">LangGraph</span>
+          <span class="tag purple">Qdrant</span>
+          <span class="tag purple">Ollama LLM</span>
+          <span class="tag purple">BM25 + Vector</span>
+          <span class="tag purple">FastAPI</span>
+          <span class="tag purple">Langfuse</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="max-width:960px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;">
+    <div>
+      <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">Bobydo Inc.</div>
+      <div>Canada-based software consulting firm &mdash; Edmonton, Alberta</div>
+    </div>
+    <div style="text-align:right;">
+      <div>&copy; <script>document.write(new Date().getFullYear())</script> Bobydo Inc. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+Step 1 — Finish Cloudflare verification
+
+Go to Cloudflare dashboard → click bobydo.pro zone → click "Overview page" in the orange pending banner → complete verification (nameservers are already correct, may just need a few minutes)
+Step 2 — Deploy to Pages
+
+Dashboard → Workers & Pages → Create → Pages → Upload assets
+Name the project bobydo-site, upload index.html, click Deploy
+Step 3 — Add custom domain
+
+Inside the Pages project → Custom domains → Set up a custom domain
+Type bobydo.pro → Cloudflare automatically adds the DNS record for you
+Step 4 — Done
+
+https://bobydo.pro goes live with free SSL in minutes
+
+Cloudflare Dashboard → bobydo.pro → Email → Email Routing
+
+Click Get started
+Add a forwarding rule:
+From: contact@bobydo.pro
+To: <your-personal-gmail>
+Cloudflare will send a verification email to your Gmail — click the link to confirm
+Enable Email Routing — Cloudflare auto-adds the MX records (you can skip the DNS import file for email)
+Once verified, any email sent to contact@bobydo.pro
