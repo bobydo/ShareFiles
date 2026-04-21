@@ -1,4 +1,5 @@
 Step 1 — Finish Cloudflare verification
+https://dash.cloudflare.com/e6f74de28b7ee985e010db5b9aa93162/domains/overview
 
 Go to Cloudflare dashboard → click bobydo.pro zone → click "Overview page" in the orange pending banner → complete verification (nameservers are already correct, may just need a few minutes)
 Step 2 — Deploy to Pages
