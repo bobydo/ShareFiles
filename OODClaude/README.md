@@ -117,3 +117,148 @@ What are the main components of the fastapi repo? use deepwiki
 How do I create a basic FastAPI route? use context7
 - Fetch — read a live webpage:
 Fetch https://dev.to/fallon_jimmy/top-10-mcp-servers-for-2025-yes-githubs-included-15jg and summarize how to use them with bullet points to OODClaude\mcp_summary.md?
+
+## Plugins — Packaging Skills & MCP Servers
+Intro: Bundle your custom skills and MCP server configs into a shareable package so teammates can install your setup in one command instead of configuring everything manually.
+Useful prompts:
+- Package a skill for distribution
+- Place SKILL.md in ~/.claude/skills/<skill-name>/
+- Share the folder — others drop it in their own ~/.claude/skills/
+
+### Official Anthropic marketplace: (risk to mess up agent)
+GitHub directory: anthropics/claude-plugins-official
+Docs: code.claude.com/docs/en/discover-plugins
+### Community directories: (risk to mess up agent)
+claudemarketplaces.com — browsable directory with categories
+mcpservers.org — MCP-focused, larger catalog
+
+```bash
+/plugin install <name>@claude-plugins-official
+```
+
+---
+
+## Subagents — Parallel Specialized Agents
+
+**Intro:** Instead of one Claude doing everything, you spawn focused agents in parallel — one for UI, one for backend, one for tests — each scoped to their domain. Faster and more accurate than one generalist.
+
+### /agents Command
+Opens a tabbed interface in Claude Code:
+- **Running tab** — shows live subagents, lets you open or stop them
+- **Library tab** — view all available subagents (built-in, user, project, plugin), create new ones, edit tool access
+
+### Prompt Examples
+
+**Example 1 — Exact screenshot recreation:**
+```
+Implement a basic todo app in Flask.
+Frontend should be blueish in style with nice animations.
+Backend in Flask.
+Use 2 specialized subagents in parallel:
+- flask-backend-db-specialist: build app.py with SQLite CRUD routes
+- ui-animation-designer: build templates/index.html with blueish CSS animations
+```
+
+**Example 2 — Full-stack feature:**
+```
+Add user authentication to this project.
+Spawn 3 subagents in parallel:
+- backend-auth-specialist: JWT login/register endpoints in src/api/auth.py
+- frontend-auth-designer: Login and Register React components in src/components/
+- test-engineer: pytest tests for all auth endpoints in tests/test_auth.py
+```
+
+**Example 3 — Code review + refactor:**
+```
+Review and improve this codebase using parallel subagents:
+- security-auditor: scan all files for SQL injection, XSS, hardcoded secrets
+- performance-optimizer: find slow queries and N+1 problems
+- oop-refactor-specialist: apply OOP patterns per CLAUDE.md standards
+Each subagent reports findings before any changes are made.
+```
+
+> **Tip:** Give each agent a descriptive hyphenated name and a specific file scope — that produces the clean named-agent display in the Claude Code UI.
+
+---
+
+## Agent Teams — Decentralized Multi-Agent Collaboration
+
+**Intro:** Experimental mode where agents talk *to each other*, not just back to you. A UI designer reacts to what the architect says, the business person pushes back on both — genuine multi-perspective collaboration.
+
+| | Subagents | Agent Teams |
+|---|---|---|
+| Communication | Master → agents only | Agents talk to each other |
+| Coordination | You orchestrate via prompt | Agents self-coordinate |
+| Status | Stable | Experimental |
+| Enable | Default on | Requires env var |
+
+### Enable
+
+**Mac/Linux:**
+```bash
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 claude
+```
+
+**Windows (PowerShell — current session):**
+```powershell
+$env:CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1; claude
+```
+
+**Windows (PowerShell — permanent):**
+```powershell
+[System.Environment]::SetEnvironmentVariable("CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS", "1", "User")
+```
+
+### Prompt Example
+
+```
+Create an agent team to brainstorm ideas for a todo app from three different angles:
+1. UI designer
+2. software architect
+3. business person
+```
+### Token heavily
+![1776871306880](image/README/1776871306880.png)
+
+---
+
+## Worktrees — Multiple Branches Simultaneously
+
+**Intro:** Git worktrees let you have multiple branches checked out at the same time in separate folders. Claude Code detects the worktree automatically — open a new Claude session pointed at the worktree folder and it works on that branch independently.
+
+```bash
+# Create worktree for a new feature
+git worktree add ../myproject-feature feature/new-auth
+
+# List active worktrees
+git worktree list
+
+# Open Claude Code in the worktree
+cd ../myproject-feature
+claude
+
+# Remove when done
+git worktree remove ../myproject-feature
+```
+
+---
+
+## Memory — Persistent Preferences Across Sessions
+
+**Intro:** Claude saves facts, preferences, and project context so future sessions already know your coding style, decisions, and ongoing work. For permanent rules that never change, use `CLAUDE.md` instead — it is always loaded and never drifts.
+
+```
+# In Claude Code chat — save something
+Remember that this project uses PostgreSQL and async SQLAlchemy.
+
+# Recall memory
+What do you remember about this project?
+
+# Force forget something
+Forget that we use SQLite — we migrated to PostgreSQL.
+```
+
+```powershell
+# View memory files directly (Windows)
+ls C:\Users\<user_id>\.claude\projects\
+```
