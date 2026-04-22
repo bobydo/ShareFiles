@@ -224,7 +224,7 @@ Create an agent team to brainstorm ideas for a todo app from three different ang
 
 ## Worktrees — Multiple Branches Simultaneously
 
-**Intro:** Git worktrees let you have multiple branches checked out at the same time in separate folders. Claude Code detects the worktree automatically — open a new Claude session pointed at the worktree folder and it works on that branch independently.
+**Intro:** Git worktrees let you have **multiple branches checked out** at the same time in separate folders. Claude Code detects the worktree automatically — open a new Claude session pointed at the worktree folder and it works on that branch independently.
 
 ```bash
 # Create worktree for a new feature
