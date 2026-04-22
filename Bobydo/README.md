@@ -60,7 +60,7 @@ To check propagation progress: https://dnschecker.org/#NS/bobydo.pro
 ## Step 3 — Enable Email Routing (After nameservers confirmed)
 
 1. Cloudflare → `bobydo.pro` → **Email** → **Email Routing**
-2. Click **Get started**
+2. Click Routing rules tab (top of the page) → Create address
 3. Add forwarding rule:
    - From: `contact@bobydo.pro`
    - To: your Gmail (baoshenyi@gmail.com)
