@@ -1,0 +1,21 @@
+# Node / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# pbiviz / Power BI visuals build output
+dist/
+.tmp/
+*.pbiviz
+webpack.statistics*.html
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs and coverage
+*.log
+coverage/
