@@ -1,0 +1,50 @@
+{
+  "issue": {
+    "repo": "bobydo/ShareFiles",
+    "number": 1,
+    "url": "https://github.com/bobydo/ShareFiles/issues/1",
+    "title": "build a app to analyze github requirement and solution",
+    "body": "Project Requirements\nBuild an application that integrates with a local LLM server (no external AI services).\nRetrieve issue data (URL + content) using either:\n\n- a specific issue number, or\n\n- issues created/updated today.\n\nAnalyze each issue to determine clarity of requirements, including:\n\n- a clarity score\n\n- actionable improvement recommendations\n\nAnalyze replies and classify them into:\n\n- Discussion\n\n- Proposed Solution\n\nFor replies classified as Proposed Solution:\n\n- estimate technical feasibility (e.g., complexity, effort, risk)\n\n- ignore Discussion replies\n\nStore all results in a readable format (e.g., HTML report or structured output like JSON for further use)",
+    "author": "bobydo",
+    "created_at": "2026-04-24T14:40:51Z",
+    "labels": [],
+    "state": "OPEN",
+    "replies": [
+      {
+        "index": 1,
+        "author": "bobydo",
+        "created_at": "2026-04-24T14:41:35Z",
+        "body": "Love to talk about more details about output format",
+        "classification": "discussion",
+        "feasibility": null
+      },
+      {
+        "index": 2,
+        "author": "bobydo",
+        "created_at": "2026-04-24T14:50:39Z",
+        "body": "Solution\nLocal LLM integration (no external AI)\nAll analysis runs through a local Ollama server. The model and endpoint are configured in one place and shared across the entire system.\nFetch issue by number\nGiven a specific issue number, the system retrieves the full issue â€” title, body, author, metadata, and all comments â€” directly from GitHub.\nFetch today's issues\nWhen no specific issue is specified, the system discovers all issues created or updated today and processes each one automatically.\nClarity scoring\nEach issue is evaluated and given a clarity score from 1â€“10, reflecting how well-defined the requirements are.\nImprovement recommendations\nAlongside the score, the system produces a list of concrete recommendations for making the issue clearer â€” focused on the requirements themselves, not on implementation.\nReply classification\nEvery reply on an issue is classified as either a Discussion or a Proposed Solution.\nFeasibility estimation\nProposed Solution replies are assessed for complexity, effort, and risk, each with a supporting rationale. Discussion replies are skipped entirely.\nReporting\nResults are written to a reports folder in any combination of JSON, HTML, and plain text. The HTML report is self-contained with visual indicators for scores and classifications.",
+        "classification": "proposed_solution",
+        "feasibility": {
+          "complexity": "medium",
+          "effort": "2-3 weeks",
+          "risk": "medium",
+          "rationale": "The solution requires integrating GitHub API with a local LLM server, processing nested issue data, and implementing classification logic. Key challenges include handling GitHub's rate limits, ensuring accurate reply classification, and generating structured reports. These components involve multiple system interactions with moderate complexity but manageable implementation risks."
+        }
+      }
+    ]
+  },
+  "clarity": {
+    "score": 5,
+    "recommendations": [
+      "Define the specific LLM server integration protocol (e.g., API endpoints, communication protocol)",
+      "Specify classification criteria for distinguishing Discussion vs Proposed Solution replies",
+      "State the target platform (web app, desktop, CLI) and required dependencies",
+      "Define success criteria for clarity scoring and feasibility estimation",
+      "Include sample input/output examples for expected analysis results",
+      "Clarify how to handle pagination/rate limiting when retrieving GitHub issues"
+    ],
+    "rationale": "The requirements show intent but lack critical details about LLM integration, classification rules, platform specifics, and success metrics. Missing acceptance criteria and concrete examples prevent clear implementation guidance."
+  },
+  "generated_at": "2026-04-24T15:10:36+00:00",
+  "model": "qwen3:8b"
+}

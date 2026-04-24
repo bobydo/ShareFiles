@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>bobydo/ShareFiles #1 — build a app to analyze github requirement and solution</title>
+<style>
+    :root {
+        --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e;
+        --card: #161b22; --border: #30363d;
+        --ok: #3fb950; --warn: #d29922; --bad: #f85149;
+        --link: #58a6ff;
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--fg); font-family: -apple-system, Segoe UI, sans-serif; margin: 0; padding: 2rem; line-height: 1.55; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 960px; margin: 0 auto; }
+    header.issue { border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    header.issue h1 { margin: 0 0 .25rem 0; font-size: 1.5rem; }
+    .meta { color: var(--muted); font-size: .9rem; }
+    .meta span { margin-right: 1rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.25rem; }
+    .clarity { display: flex; align-items: center; gap: 1.5rem; }
+    .score-badge { font-size: 2.5rem; font-weight: 700; min-width: 4rem; text-align: center; padding: .5rem 1rem; border-radius: 8px; border: 2px solid var(--border); }
+    .score-ok { border-color: var(--ok); color: var(--ok); }
+    .score-warn { border-color: var(--warn); color: var(--warn); }
+    .score-bad { border-color: var(--bad); color: var(--bad); }
+    .clarity-body { flex: 1; }
+    .clarity h2 { margin-top: 0; }
+    ul.recs { margin: .25rem 0 0 1.25rem; padding: 0; }
+    .body-text { white-space: pre-wrap; background: #0b0f15; border: 1px solid var(--border); padding: 1rem; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+    .reply { margin-bottom: 1rem; }
+    .reply-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; }
+    .reply-author { font-weight: 600; }
+    .reply-date { color: var(--muted); font-size: .85rem; }
+    .chip { display: inline-block; padding: .15rem .6rem; border-radius: 999px; font-size: .75rem; font-weight: 600; letter-spacing: .03em; border: 1px solid var(--border); }
+    .chip-sol { background: rgba(63,185,80,.15); color: var(--ok); border-color: var(--ok); }
+    .chip-disc { background: rgba(139,148,158,.15); color: var(--muted); }
+    .chip-low { color: var(--ok); border-color: var(--ok); }
+    .chip-medium { color: var(--warn); border-color: var(--warn); }
+    .chip-high { color: var(--bad); border-color: var(--bad); }
+    .feasibility { margin-top: .75rem; padding: .75rem; border-left: 3px solid var(--link); background: rgba(88,166,255,.05); }
+    .feasibility-row { display: flex; gap: 1rem; margin-bottom: .5rem; flex-wrap: wrap; }
+    .feasibility-label { color: var(--muted); font-size: .8rem; text-transform: uppercase; margin-right: .25rem; }
+    .footer { color: var(--muted); font-size: .8rem; text-align: center; margin-top: 2rem; }
+    </style>
+</head><body><div class="container">
+<header class="issue">
+<h1>#1 — build a app to analyze github requirement and solution</h1>
+<div class="meta"><span>repo <strong>bobydo/ShareFiles</strong></span><span>state <strong>OPEN</strong></span><span>author bobydo</span><span>opened 2026-04-24</span><span>labels none</span><span><a href="https://github.com/bobydo/ShareFiles/issues/1" target="_blank">view on GitHub</a></span></div></header>
+<section class="card clarity">
+<div class="score-badge score-warn">5<span style="font-size:1rem;">/10</span></div>
+<div class="clarity-body">
+<h2>Requirement clarity</h2>
+<p>The requirements show intent but lack critical details about LLM integration, classification rules, platform specifics, and success metrics. Missing acceptance criteria and concrete examples prevent clear implementation guidance.</p>
+<strong>Recommendations</strong><ul class="recs">
+<li>Define the specific LLM server integration protocol (e.g., API endpoints, communication protocol)</li>
+<li>Specify classification criteria for distinguishing Discussion vs Proposed Solution replies</li>
+<li>State the target platform (web app, desktop, CLI) and required dependencies</li>
+<li>Define success criteria for clarity scoring and feasibility estimation</li>
+<li>Include sample input/output examples for expected analysis results</li>
+<li>Clarify how to handle pagination/rate limiting when retrieving GitHub issues</li>
+</ul>
+</div></section>
+<section class="card"><h2>Issue body</h2>
+<div class="body-text">Project Requirements
+Build an application that integrates with a local LLM server (no external AI services).
+Retrieve issue data (URL + content) using either:
+
+- a specific issue number, or
+
+- issues created/updated today.
+
+Analyze each issue to determine clarity of requirements, including:
+
+- a clarity score
+
+- actionable improvement recommendations
+
+Analyze replies and classify them into:
+
+- Discussion
+
+- Proposed Solution
+
+For replies classified as Proposed Solution:
+
+- estimate technical feasibility (e.g., complexity, effort, risk)
+
+- ignore Discussion replies
+
+Store all results in a readable format (e.g., HTML report or structured output like JSON for further use)</div>
+</section>
+<section class="card"><h2>Replies (2)</h2>
+<div class="reply">
+<div class="reply-head">
+<div><span class="reply-author">bobydo</span> <span class="reply-date">· #1 · 2026-04-24</span></div>
+<span class="chip chip-disc">discussion</span>
+</div>
+<div class="body-text">Love to talk about more details about output format</div>
+</div>
+<div class="reply">
+<div class="reply-head">
+<div><span class="reply-author">bobydo</span> <span class="reply-date">· #2 · 2026-04-24</span></div>
+<span class="chip chip-sol">proposed solution</span>
+</div>
+<div class="body-text">Solution
+Local LLM integration (no external AI)
+All analysis runs through a local Ollama server. The model and endpoint are configured in one place and shared across the entire system.
+Fetch issue by number
+Given a specific issue number, the system retrieves the full issue â€” title, body, author, metadata, and all comments â€” directly from GitHub.
+Fetch today&#x27;s issues
+When no specific issue is specified, the system discovers all issues created or updated today and processes each one automatically.
+Clarity scoring
+Each issue is evaluated and given a clarity score from 1â€“10, reflecting how well-defined the requirements are.
+Improvement recommendations
+Alongside the score, the system produces a list of concrete recommendations for making the issue clearer â€” focused on the requirements themselves, not on implementation.
+Reply classification
+Every reply on an issue is classified as either a Discussion or a Proposed Solution.
+Feasibility estimation
+Proposed Solution replies are assessed for complexity, effort, and risk, each with a supporting rationale. Discussion replies are skipped entirely.
+Reporting
+Results are written to a reports folder in any combination of JSON, HTML, and plain text. The HTML report is self-contained with visual indicators for scores and classifications.</div>
+<div class="feasibility">
+<div class="feasibility-row">
+<span><span class="feasibility-label">complexity</span><span class="chip chip-medium">medium</span></span>
+<span><span class="feasibility-label">effort</span>2-3 weeks</span>
+<span><span class="feasibility-label">risk</span><span class="chip chip-medium">medium</span></span>
+</div>
+<div>The solution requires integrating GitHub API with a local LLM server, processing nested issue data, and implementing classification logic. Key challenges include handling GitHub&#x27;s rate limits, ensuring accurate reply classification, and generating structured reports. These components involve multiple system interactions with moderate complexity but manageable implementation risks.</div>
+</div>
+</div>
+</section>
+<div class="footer">Generated 2026-04-24T15:10:36+00:00 · model <code>qwen3:8b</code></div>
+</div></body></html>

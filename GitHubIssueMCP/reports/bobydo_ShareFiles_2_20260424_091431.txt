@@ -1,0 +1,45 @@
+======================================================================
+REPO:    bobydo/ShareFiles
+ISSUE:   #2  [OPEN]
+URL:     https://github.com/bobydo/ShareFiles/issues/2
+AUTHOR:  bobydo  (2026-04-24)
+LABELS:  none
+MODEL:   qwen3:8b
+RUN AT:  2026-04-24T15:14:31+00:00
+======================================================================
+
+── CLARITY ─────────────────────────────────────────────────────────
+Score: 4/10
+Rationale: The requirement describes a current state but lacks clear goals, success criteria, and context for the proposed improvement. Without knowing what 'JobFit improvement' entails, target platform, or acceptance criteria, developers cannot determine the exact scope or validation metrics.
+Recommendations:
+  - Define the specific improvement goal for JobFit (e.g., automation, integration, performance)
+  - State the target platform or system where this functionality should be implemented
+  - Provide acceptance criteria for what constitutes a successful implementation
+  - Include a reproduction case or example scenario demonstrating the current workflow
+  - Clarify if this is a replacement for existing functionality or an enhancement
+
+── ISSUE BODY ──────────────────────────────────────────────────────
+Requirment:
+Current retrieve resumes from Gmail Connect to a Gmail account and read emails carrying a specific label (resumes) without requiring the user to manually upload or forward anything.
+
+── REPLIES (1) ───────────────────────────────────────────
+
+[Reply 1] bobydo — 2026-04-24  <PROPOSED_SOLUTION>
+------------------------------------------------------------
+The "Local First" Approach
+Instead of fetching from Gmail, let the user upload their resume directly to the extension once.
+Storage: Use chrome.storage.local. If you request the unlimitedStorage permission in your manifest, you can store much more than the default 10MB (plenty for many PDF/Docx versions).
+User Experience: In your extension popup, provide a "Upload Resume" button. The file is stored in the browser's local database.
+Why it's better: Zero privacy concerns regarding email. The data never has to leave their machine unless you want to process it on your backend.
+Google Drive "File Picker" (I like this idea the most)
+If you really want the resume to be "in the cloud" so it stays synced across their devices, use the Google Picker API or Drive API with the drive.file scope.
+The Difference: The drive.file scope is not restricted. It only gives your extension access to files the user specifically selects through the picker.
+UX: The user clicks "Select from Drive," a Google-branded window pops up, they pick the resume, and your extension gets a one-time read grant for just that file.
+Verification: This is a "Sensitive" scope, not "Restricted," meaning the verification is much faster (often automated or a simple video review) and doesn't require a paid security audit.
+
+  FEASIBILITY:
+    complexity: medium
+    effort:     1-2 days
+    risk:       low
+    rationale:  Implementing the 'Local First' approach requires modifying the extension's UI to add an upload button and integrating chrome.storage.local with the unlimitedStorage permission. This is a multi-file change involving storage logic and UI updates, but carries low risk since data remains local and no external dependencies are introduced. The Google Drive API option would involve higher complexity and risk due to OAuth integration, but the proposed solution prioritizes the simpler local storage approach.
+

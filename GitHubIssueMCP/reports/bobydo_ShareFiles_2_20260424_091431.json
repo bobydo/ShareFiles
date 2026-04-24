@@ -1,0 +1,41 @@
+{
+  "issue": {
+    "repo": "bobydo/ShareFiles",
+    "number": 2,
+    "url": "https://github.com/bobydo/ShareFiles/issues/2",
+    "title": "JobFit improvement",
+    "body": "Requirment:\nCurrent retrieve resumes from Gmail Connect to a Gmail account and read emails carrying a specific label (resumes) without requiring the user to manually upload or forward anything.",
+    "author": "bobydo",
+    "created_at": "2026-04-24T14:57:34Z",
+    "labels": [],
+    "state": "OPEN",
+    "replies": [
+      {
+        "index": 1,
+        "author": "bobydo",
+        "created_at": "2026-04-24T14:57:57Z",
+        "body": "The \"Local First\" Approach\nInstead of fetching from Gmail, let the user upload their resume directly to the extension once.\nStorage: Use chrome.storage.local. If you request the unlimitedStorage permission in your manifest, you can store much more than the default 10MB (plenty for many PDF/Docx versions).\nUser Experience: In your extension popup, provide a \"Upload Resume\" button. The file is stored in the browser's local database.\nWhy it's better: Zero privacy concerns regarding email. The data never has to leave their machine unless you want to process it on your backend.\nGoogle Drive \"File Picker\" (I like this idea the most)\nIf you really want the resume to be \"in the cloud\" so it stays synced across their devices, use the Google Picker API or Drive API with the drive.file scope.\nThe Difference: The drive.file scope is not restricted. It only gives your extension access to files the user specifically selects through the picker.\nUX: The user clicks \"Select from Drive,\" a Google-branded window pops up, they pick the resume, and your extension gets a one-time read grant for just that file.\nVerification: This is a \"Sensitive\" scope, not \"Restricted,\" meaning the verification is much faster (often automated or a simple video review) and doesn't require a paid security audit.",
+        "classification": "proposed_solution",
+        "feasibility": {
+          "complexity": "medium",
+          "effort": "1-2 days",
+          "risk": "low",
+          "rationale": "Implementing the 'Local First' approach requires modifying the extension's UI to add an upload button and integrating chrome.storage.local with the unlimitedStorage permission. This is a multi-file change involving storage logic and UI updates, but carries low risk since data remains local and no external dependencies are introduced. The Google Drive API option would involve higher complexity and risk due to OAuth integration, but the proposed solution prioritizes the simpler local storage approach."
+        }
+      }
+    ]
+  },
+  "clarity": {
+    "score": 4,
+    "recommendations": [
+      "Define the specific improvement goal for JobFit (e.g., automation, integration, performance)",
+      "State the target platform or system where this functionality should be implemented",
+      "Provide acceptance criteria for what constitutes a successful implementation",
+      "Include a reproduction case or example scenario demonstrating the current workflow",
+      "Clarify if this is a replacement for existing functionality or an enhancement"
+    ],
+    "rationale": "The requirement describes a current state but lacks clear goals, success criteria, and context for the proposed improvement. Without knowing what 'JobFit improvement' entails, target platform, or acceptance criteria, developers cannot determine the exact scope or validation metrics."
+  },
+  "generated_at": "2026-04-24T15:14:31+00:00",
+  "model": "qwen3:8b"
+}
