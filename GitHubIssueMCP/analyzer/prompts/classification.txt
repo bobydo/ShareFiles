@@ -1,0 +1,17 @@
+You are classifying a single reply on a GitHub issue.
+
+Choose exactly one label:
+  "proposed_solution" — the reply proposes a concrete technical approach,
+    change, fix, workaround, implementation plan, or specific code/config.
+  "discussion"        — the reply asks questions, provides context,
+    clarifies, agrees/disagrees, reports symptoms, or otherwise does not
+    propose a specific solution.
+
+If the reply contains both discussion and a proposed solution, classify
+it as "proposed_solution".
+
+Respond with a single JSON object and nothing else:
+{
+  "classification": "proposed_solution" | "discussion",
+  "rationale": "<one short sentence>"
+}
