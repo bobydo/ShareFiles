@@ -1,20 +1,13 @@
 ````markdown
 # Requirement and Solution Analyzer
 
-This tool helps bridge unclear issues into actionable technical plans:
+AI tool that clarifies requirements, suggests technical solutions, and estimates feasibility (complexity, effort and risk) using a local LLM (privacy-safe).
 
-- **Clarify Requirements**
-  - Detect ambiguity, missing details, unclear scope
-  - Suggest specific questions to refine requirements
+## What it does
 
-- **Propose Technical Solution**
-  - Categorize issue (bug / feature / discussion)
-  - Suggest possible implementation approaches
-
-- **Estimate Feasibility**
-  - Complexity: Low / Medium / High
-  - Effort: Hours / Days
-  - Risk: Dependencies, unclear scope, edge cases
+- Clarify requirements
+- Classify replies (discussion vs solution)
+- Estimate technical feasibility (complexity, effort, risk)
 
 ## Tech
 - **Model:** `OLLAMA_MODEL = "qwen3:8b"` (for security purpose)
@@ -47,11 +40,11 @@ uv run python analyze_issues.py --repo bobydo/ShareFiles --issue 1
 uv run python analyze_issues.py --repo bobydo/ShareFiles --issue 1
 ```
 
-## Result
+## Example
 - Real report https://github.com/bobydo/ShareFiles/tree/main/GitHubIssueMCP/reports
-- **Issue:**  
+- **Input Issue:**  
 - **Skip Discussion Reply:**  
-- **Technical Feasibility (complexity / effort / risk):**  
+- **Technical Feasibility (complexity / effort / risk): Estimate: Medium complexity, 2-3 weeks, medium complexity and risk**  
 ![1777044742177](image/README/1777044742177.png)
 
 ## Future Improvements
