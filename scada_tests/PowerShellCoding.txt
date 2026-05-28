@@ -1,0 +1,236 @@
+================================================================================
+  STABLE & REUSABLE POWERSHELL SCRIPTING — INTERVIEW SUMMARY
+================================================================================
+
+1. SCRIPT STRUCTURE
+-------------------
+Always use [CmdletBinding()] and param blocks. This gives you -Verbose, -Debug,
+and -WhatIf for free without writing any extra code.
+
+  function Get-Something {
+      [CmdletBinding()]
+      param(
+          [Parameter(Mandatory)]
+          [string]$Path,
+
+          [ValidateSet('dev','prod')]
+          [string]$Env = 'dev',
+
+          [switch]$WhatIf
+      )
+      Write-Verbose "Processing $Path in $Env"
+  }
+
+
+2. ERROR HANDLING
+-----------------
+Set $ErrorActionPreference = 'Stop' at the top of every script. Without it,
+PowerShell logs errors and continues — the most common cause of flaky scripts.
+
+  $ErrorActionPreference = 'Stop'
+
+  try {
+      Get-Item $Path
+  } catch [System.IO.FileNotFoundException] {
+      Write-Error "File not found: $Path"
+      exit 1
+  } finally {
+      # cleanup always runs
+  }
+
+
+3. PARAMETER VALIDATION
+------------------------
+Reject bad input before your code runs using built-in validation attributes.
+
+  param(
+      [ValidateNotNullOrEmpty()]  [string]$Name,
+      [ValidateSet('A','B','C')]  [string]$Mode,
+      [ValidateScript({ Test-Path $_ })] [string]$FilePath
+  )
+
+
+4. IDEMPOTENCY
+--------------
+Always check state before acting — safe to run multiple times.
+
+  if (-not (Test-Path $dest)) {
+      Copy-Item $src $dest
+  }
+
+
+5. OUTPUT DISCIPLINE
+--------------------
+- Use Write-Verbose / Write-Warning for status messages
+- NEVER use Write-Host (breaks the pipeline)
+- Return objects, not formatted strings — callers can filter/sort
+
+  function Get-Users {
+      return [PSCustomObject]@{ Name = 'Alice'; Role = 'Admin' }
+  }
+
+  Get-Users | Where-Object Role -eq 'Admin'
+
+
+================================================================================
+  OOP MODULE DESIGN
+================================================================================
+
+6. CLASS-BASED DESIGN (PowerShell 5+)
+--------------------------------------
+Use classes with constructor injection for dependencies.
+
+  # Classes/DatabaseClient.ps1
+  class DatabaseClient {
+      [string] $ConnectionString
+      hidden [object] $_connection
+
+      DatabaseClient([string]$connStr) {
+          $this.ConnectionString = $connStr
+      }
+
+      [object] Query([string]$sql) {
+          # execute and return results
+      }
+  }
+
+  # Classes/ReportBuilder.ps1  — Builder pattern
+  class ReportBuilder {
+      hidden [DatabaseClient] $_client
+      hidden [string[]] $_sections = @()
+
+      ReportBuilder([DatabaseClient]$client) {
+          $this._client = $client        # dependency injection
+      }
+
+      [ReportBuilder] AddSection([string]$name) {
+          $this._sections += $name
+          return $this                   # fluent chaining
+      }
+
+      [string] Build() {
+          return $this._sections -join "`n"
+      }
+  }
+
+
+7. MODULE LAYOUT
+----------------
+  MyModule/
+  ├── MyModule.psd1          # manifest (version, exports)
+  ├── MyModule.psm1          # root — dot-sources classes then functions
+  └── Classes/
+      ├── DatabaseClient.ps1
+      └── ReportBuilder.ps1
+
+
+  # MyModule.psm1
+  . $PSScriptRoot/Classes/DatabaseClient.ps1   # classes FIRST
+  . $PSScriptRoot/Classes/ReportBuilder.ps1
+
+  function New-Report {
+      param([string]$ConnStr, [string[]]$Sections)
+      $db      = [DatabaseClient]::new($ConnStr)
+      $builder = [ReportBuilder]::new($db)
+      foreach ($s in $Sections) { $builder.AddSection($s) }
+      $builder.Build()
+  }
+
+  # MyModule.psd1
+  @{
+      ModuleVersion     = '1.0.0'
+      RootModule        = 'MyModule.psm1'
+      FunctionsToExport = @('New-Report')
+  }
+
+
+8. DESIGN PATTERNS CHEAT SHEET
+--------------------------------
+  Pattern       | PowerShell idiom
+  --------------|--------------------------------------------------
+  Injection     | Constructor takes [DatabaseClient], not a string
+  Builder       | Methods return $this for fluent chaining
+  Adapter       | Class wraps a raw REST/COM call behind clean API
+  Strategy      | Pass a [scriptblock] or class instance as param
+  Singleton     | Module-scoped variable, initialized once in .psm1
+
+
+================================================================================
+  PESTER TESTING FRAMEWORK
+================================================================================
+
+Pester is PowerShell's built-in test framework (ships with Windows 10+).
+Use v5 — the API changed significantly from v3/v4.
+
+  Install-Module Pester -Force   # upgrade to v5
+
+9. TEST STRUCTURE
+-----------------
+  # MyModule.Tests.ps1
+  BeforeAll { Import-Module $PSScriptRoot/MyModule.psd1 -Force }
+
+  Describe 'ReportBuilder' {
+      It 'builds a report with sections' {
+          $db     = [DatabaseClient]::new('fake-conn')
+          $result = [ReportBuilder]::new($db)
+                      .AddSection('Intro')
+                      .AddSection('Body')
+                      .Build()
+          $result | Should -Match 'Intro'
+      }
+
+      It 'returns empty string when no sections added' {
+          $db     = [DatabaseClient]::new('fake-conn')
+          $result = [ReportBuilder]::new($db).Build()
+          $result | Should -BeNullOrEmpty
+      }
+  }
+
+
+10. MOCKING — isolate dependencies
+------------------------------------
+  Describe 'Get-Data' {
+      It 'calls the API exactly once' {
+          Mock Invoke-RestMethod { return @{ id = 1 } }
+
+          Get-Data -Url 'http://api/items'
+
+          Should -Invoke Invoke-RestMethod -Times 1 -Exactly
+      }
+  }
+
+
+11. RUN TESTS
+-------------
+  Invoke-Pester ./MyModule.Tests.ps1 -Output Detailed
+
+  # Output:
+  # Describing ReportBuilder
+  #   [+] builds a report with sections  23ms
+  #   [+] returns empty string ...        8ms
+  # Tests completed — Passed: 2, Failed: 0
+
+
+12. PESTER vs OTHER FRAMEWORKS
+--------------------------------
+  Pester keyword  | Equivalent
+  ----------------|---------------------------
+  Describe        | test suite / class
+  It              | @Test / test case
+  BeforeAll       | @BeforeAll / setup_module
+  Should -Be      | assertEqual / expect().toBe()
+  Mock            | jest.mock() / unittest.mock
+
+
+================================================================================
+  KEY TAKEAWAYS FOR INTERVIEW
+================================================================================
+
+  1. $ErrorActionPreference = 'Stop' — most important stability rule
+  2. [CmdletBinding()] + param validation — reject bad input early
+  3. Return objects, not strings — keeps scripts composable
+  4. Class-based modules with constructor injection — testable and swappable
+  5. Pester v5 for unit + mock testing — integrates with CI/CD pipelines
+  6. Dot-source class files before function files in .psm1
+
+================================================================================
