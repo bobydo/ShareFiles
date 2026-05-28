@@ -1,0 +1,37 @@
+================================================================================
+  HMI PUMP UNIT — DESIGN TO IMPLEMENTATION FLOW (AVEVA OASyS)
+================================================================================
+
+1. BACKEND — Device Table
+   - Define device table with all pump units
+   - Each pump row holds type, id, location, config params
+
+2. C# LIBRARY — Pump Actions
+   - Create a shared library to handle all pump actions
+   - Encapsulate start, stop, reset, status read behind clean methods
+   - Enables reuse across displays and projects
+
+3. LOGGING & ERROR HANDLING
+   - Catch exceptions at every action call
+   - Log errors with timestamp, pump id, action attempted
+   - Surface meaningful messages to operator, not raw exceptions
+
+4. DISPLAY — Grid & Single Group
+   - Build composite grid view (all pumps overview)
+   - Build single pump group display (detail view)
+   - Layout driven by display requirements
+
+5. STATUS LINKING
+   - Pump with 2 states  → link to status table
+   - Pump with 3+ states → link to multistatus table
+
+6. ALARMS
+   - Configure fault triggers per pump type
+   - Set priority levels and acknowledgement rules
+   - Add alarm sound and visual flash on display
+
+7. TEST DISPLAY
+   - Single display covering all pump types
+   - Allows every pump action and status scenario to be tested in one place
+
+================================================================================
