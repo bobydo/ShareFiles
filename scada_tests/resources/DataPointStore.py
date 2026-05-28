@@ -24,9 +24,20 @@ STA_A_DISCHARGE        = 900.0   # STA_A pump discharge pressure when running
 SEGMENT_A_LOSS         = 80.0    # expected friction loss through SEGMENT_A (normal flow)
 STA_B_SUCTION          = STA_A_DISCHARGE - SEGMENT_A_LOSS   # = 820 kPa
 
-# Leak detection thresholds
-LEAK_WARN_FACTOR       = 1.5     # actual drop > 1.5x expected → LEAK WARNING
-LEAK_ALARM_FACTOR      = 2.0     # actual drop > 2.0x expected → LEAK ALARM
+# Leak detection — 5 alarm levels (ISA-18.2 alarm management standard)
+# Ratio = actual pressure drop / expected friction loss
+#
+#  Level 1  Advisory  ratio > 1.10  — slight deviation, log and monitor
+#  Level 2  Warning   ratio > 1.25  — elevated, operator awareness required
+#  Level 3  Alarm     ratio > 1.50  — investigate immediately
+#  Level 4  High      ratio > 2.00  — take action, prepare for isolation
+#  Level 5  Critical  ratio > 3.00  — emergency response, possible shutdown
+#
+LEAK_L1_ADVISORY  = 1.10
+LEAK_L2_WARNING   = 1.25
+LEAK_L3_ALARM     = 1.50
+LEAK_L4_HIGH      = 2.00
+LEAK_L5_CRITICAL  = 3.00
 
 
 class DataPointStore:
@@ -141,9 +152,12 @@ class DataPointStore:
             → pump protection — could be leak OR STA_A issue
 
         LEAK WARNING / ALARM (differential):
-            actual_drop > expected_loss * LEAK_WARN_FACTOR  → WARNING
-            actual_drop > expected_loss * LEAK_ALARM_FACTOR → ALARM
-            → comparison-based — isolates leak from other causes
+        5-level leak alarm (ISA-18.2):
+            ratio > 1.10 → Level 1 Advisory
+            ratio > 1.25 → Level 2 Warning
+            ratio > 1.50 → Level 3 Alarm
+            ratio > 2.00 → Level 4 High
+            ratio > 3.00 → Level 5 Critical
 
         Returns dict with diagnosis result.
 
@@ -153,7 +167,7 @@ class DataPointStore:
 
         Example (leak):
             upstream  = 900 kPa, downstream = 700 kPa
-            actual_drop = 200 kPa, expected = 80 kPa → ALARM (2.5x)
+            actual_drop = 200 kPa, expected = 80 kPa → Level 4 High (2.5x)
         """
         with self._lock:
             up_p   = self._pressures[upstream_discharge]
@@ -162,14 +176,20 @@ class DataPointStore:
         actual_drop = up_p - down_p
         ratio       = actual_drop / expected_loss_kpa if expected_loss_kpa > 0 else 0
 
-        # Low suction alarm — threshold based
+        # Low suction alarm — threshold based (pump protection)
         low_suction = down_p < MIN_SUCTION_KPA
 
-        # Leak detection — differential based
-        if ratio >= LEAK_ALARM_FACTOR:
-            leak_status = "LEAK ALARM"
-        elif ratio >= LEAK_WARN_FACTOR:
-            leak_status = "LEAK WARNING"
+        # Leak detection — 5-level differential based
+        if ratio >= LEAK_L5_CRITICAL:
+            leak_status = "Level 5 Critical"
+        elif ratio >= LEAK_L4_HIGH:
+            leak_status = "Level 4 High"
+        elif ratio >= LEAK_L3_ALARM:
+            leak_status = "Level 3 Alarm"
+        elif ratio >= LEAK_L2_WARNING:
+            leak_status = "Level 2 Warning"
+        elif ratio >= LEAK_L1_ADVISORY:
+            leak_status = "Level 1 Advisory"
         else:
             leak_status = "NORMAL"
 

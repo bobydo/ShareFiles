@@ -278,10 +278,13 @@ class LeakDetectionSimulator:
         """
         Calls DataPointStore.check_segment_leak() and logs the result.
 
-        LOW SUCTION  < 350 kPa  → pump protection alarm (cause unknown)
-        NORMAL       drop ≈ expected friction loss
-        LEAK WARNING drop > 1.5x expected
-        LEAK ALARM   drop > 2.0x expected
+        LOW SUCTION  < 350 kPa    → pump protection alarm (cause unknown)
+        NORMAL       ratio < 1.10 → within expected friction loss
+        Level 1      ratio > 1.10 → Advisory  — log and monitor
+        Level 2      ratio > 1.25 → Warning   — operator awareness
+        Level 3      ratio > 1.50 → Alarm     — investigate immediately
+        Level 4      ratio > 2.00 → High      — prepare for isolation
+        Level 5      ratio > 3.00 → Critical  — emergency response
         """
         result = self._store.check_segment_leak(
             upstream_discharge, downstream_suction, expected_loss_kpa
@@ -302,23 +305,24 @@ class LeakDetectionSimulator:
         if result["low_suction"]:
             self._log.warning(
                 f"  LOW SUCTION ALARM — {result['downstream_kpa']:.0f} kPa "
-                f"< {350:.0f} kPa threshold  "
+                f"< {MIN_SUCTION_KPA:.0f} kPa threshold  "
                 f"(pump cavitation risk — investigate STA_A or SEGMENT_A)"
             )
 
+        # Map leak_status → log level
         status = result["leak_status"]
-        if status == "NORMAL":
-            self._log.info(f"  Leak status : {status} — pressure drop within expected range")
-        elif status == "LEAK WARNING":
-            self._log.warning(
-                f"  Leak status : {status} — drop is {result['ratio']:.1f}x expected  "
-                f"(monitor — possible leak or flow change)"
-            )
-        else:  # LEAK ALARM
-            self._log.error(
-                f"  Leak status : {status} — drop is {result['ratio']:.1f}x expected  "
-                f"(immediate investigation required)"
-            )
+        _level_log = {
+            "NORMAL":           (self._log.info,    "pressure drop within expected range"),
+            "Level 1 Advisory": (self._log.info,    "slight deviation — log and monitor"),
+            "Level 2 Warning":  (self._log.warning, "elevated drop — operator awareness required"),
+            "Level 3 Alarm":    (self._log.warning, "investigate immediately"),
+            "Level 4 High":     (self._log.error,   "take action — prepare for isolation"),
+            "Level 5 Critical": (self._log.error,   "EMERGENCY — immediate response required"),
+        }
+        log_fn, description = _level_log.get(status, (self._log.info, ""))
+        log_fn(
+            f"  Leak status : {status:<20} ratio={result['ratio']:.2f}x — {description}"
+        )
 
     # ------------------------------------------------------------------
     # SUMMARY
