@@ -1,4 +1,8 @@
-# Goose
+# Goose (From Block) + local ollama qwen3:8B
+
+- Expect qwen4-coder:30B will work way better
+
+![alt text](image-1.png)
 
 ## Reference
 
