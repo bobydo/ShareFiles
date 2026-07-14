@@ -4,6 +4,45 @@ Build order, frameworks per phase, and the client-style requirements each phase
 should satisfy. Sequenced so the agent core works end-to-end early, then
 eval/guardrails/UI layer on top — see [[Discussion]] for the why behind this order.
 
+## Example target run
+- Repository: bobydo/ShareFiles (Share files)
+- Contact email: baoshenyi@gmail.com
+- Goal: use the QA copilot workflow to intake a ticket, search for similar
+  requirements, clarify gaps, create or link Xray tests, and help with test
+  scripts for this project.
+- If Git commit fails due to missing identity, set it with:
+  - `git config --global user.name "bobydo"`
+  - `git config --global user.email baoshenyi@gmail.com`
+
+## Step-by-step workflow for a Jira ticket
+
+This is the core operating flow the QA copilot should support from ticket intake
+to test execution.
+
+1. Receive and parse the Jira ticket
+   - Read the summary, description, acceptance criteria, labels, linked issues,
+     and any attachments.
+2. Search for similar requirements in Jira
+   - Find related tickets, past bugs, and prior implementations to reuse patterns
+     and avoid missed expectations.
+3. Clarify unclear or missing requirements
+   - Flag gaps, ambiguous acceptance criteria, and open questions for follow-up
+     with the product owner, developer, or QA lead.
+4. Link or create the test in Xray
+   - Create a test case in Xray when the ticket needs new coverage, or link the
+     ticket to an existing test case when one already exists.
+5. Pick up an existing test case or create a new one
+   - Prefer reusing a matching test case; otherwise create a new one with clear
+     coverage and traceability back to the ticket.
+6. Help create or refine test scripts
+   - Support manual test steps, automation outlines, or new automated test
+     scripts for the scenario.
+7. Execute and track results
+   - Run the test, capture evidence, log defects if needed, and update the ticket
+     and Xray test status.
+8. Summarize and hand off
+   - Provide a concise result summary, any blockers, and recommended next steps.
+
 ## Phase 0 — Setup (2-4 hrs)
 - Frameworks: Python, LangGraph, Semantic Kernel (just enough to compare the two)
 - Steps:
